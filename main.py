@@ -1,6 +1,14 @@
-import pygame
+import pygame,sys
 from pygame.locals import *
 import random
+from playsound import playsound
+
+
+
+pygame.mixer.init()
+theme = pygame.mixer.Sound('sound/theme1.mp3')
+level_up_sound = pygame.mixer.Sound('sound/uwu_egirl.mp3')
+cross = pygame.mixer.Sound('sound/point.wav')
 
 # shape parameters
 size = width, height = (800, 800)
@@ -14,6 +22,7 @@ speed = 1
 
 # initiallize the app
 pygame.init()
+theme.play()
 running = True
 
 # set window size
@@ -41,17 +50,21 @@ car2_loc.center = left_lane, height*0.2
 counter = 0
 # game loop
 while running:
+   
     counter += 1
 
     # increase game difficulty overtime
     if counter == 5000:
         speed += 0.15
         counter = 0
+        # playsound('sound/uwu_egirl.mp3')
+        level_up_sound.play()
         print("level up", speed)
 
     # animate enemy vehicle
     car2_loc[1] += speed
     if car2_loc[1] > height:
+        cross.play()
         # randomly select lane
         if random.randint(0,1) == 0:
             car2_loc.center = right_lane, -200
@@ -60,8 +73,8 @@ while running:
 
     # end game logic
     if car_loc[0] == car2_loc[0] and car2_loc[1] > car_loc[1] - 180:
+        playsound('sound/nyah_anime_girl.mp3')
         print("GAME OVER! YOU LOST!")
-    
         break
 
     # event listeners
